@@ -6,7 +6,7 @@ class Login extends CI_Controller {
 	function __construct() {
         parent::__construct();
 
-        $this->load->model('usuario');
+        $this->load->model('usuario_model');
     }
 
 
@@ -23,9 +23,13 @@ class Login extends CI_Controller {
             $this->output->set_content_type('application/json')->set_output(json_encode(array('estado' => false, 'mensaje' => 'Ambos campos son requeridos.')));
         }
 
-        $existencia = $this->usuario->verificar_existencia($email);
+        $existencia = $this->usuario_model->verificar_existencia($email);
         if($existencia){
             if($existencia['clave'] == $clave){
+                $this->session->set_userdata('nombre', $existencia['nombre']);
+                $this->session->set_userdata('apellido', $existencia['apellido_paterno']);
+                $this->session->set_userdata('estado', $existencia['estado_id']);
+                $this->session->set_userdata('local_codigo', $existencia['local_codigo']);
                 $this->session->set_userdata('email', $email);
                 $this->output->set_content_type('application/json')->set_output(json_encode(array('estado' => true)));
             }else{

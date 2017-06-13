@@ -26,7 +26,9 @@
             <div class="collapse navbar-collapse">
                 <div class="navbar-right">
                     <p class="navbar-text">
-                        nombre + apellido_paterno + local_codigo
+                        <?php echo $this->session->nombre ." ". $this->session->apellido; ?>
+                        <br />
+                        <?php echo $this->session->local_codigo; ?>
                     </p>
                     <p class="navbar-text"><a href="<?php echo base_url('Login/logout') ?>" class="navbar-link">Cerrar Sesión</a></p>
                 </div>
