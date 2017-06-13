@@ -1,0 +1,32 @@
+<div>
+    <div class="section-inventario">
+        <h1 class="text-center">Inventario</h1>
+        <div class="col-md-10">
+            <form class="form-inline">
+                <div class="form-group">
+                    <input type="text" class="form-control" id="" placeholder="Producto">
+                </div>
+                <button type="button" class="btn btn-info">Buscar</button>
+            </form>
+        </div>
+        <br><br>
+        <div>
+        <% for(var i=0; i<records.length; i++) { %>
+            <div class="col-sm-4 col-md-3">
+                <div class="panel panel-default">
+                    <div class="panel-heading"><%= records[i].nombre %> <small><%= records[i].descripcion %></small></div>
+                    <div class="panel-body">
+                        <p>Código: <%= records[i].codigo %></p>
+                        <p>Ultimo Inventario: <%= records[i].fecha_movimiento %></p>
+                        <p>Cantidad Total: <%= records[i].cantidad %></p>
+                        <p>
+                            <a href="#" class="btn btn-warning pull-right" onclick="mostrar_historial('<%= records[i].codigo %>', '<%= records[i].departamento_codigo %>');">Ver historial</a> 
+                        </p>
+                    </div>
+                </div>
+            </div>
+        <% } %>
+        </div>
+    </div>
+    <div class="section-historial hidden"></div>
+</div>
