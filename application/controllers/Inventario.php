@@ -9,11 +9,14 @@ class Inventario extends CI_Controller {
         if (!$this->session->has_userdata('email')) {
             redirect("login");
         }
+
+        $this->load->model('inventario_model');
     }
 
-
-	public function index()
+    ##Despliega vista listar
+	public function listar()
 	{
-		$this->load->view('main');
+        $inventarios = $this->inventario_model->listar_inventario();
+		$this->load->view('inventario/listar', array('Registros' => $inventarios));
 	}
 }

@@ -12,51 +12,26 @@ $(document).ready(function () {
 
     $('#aside-inventario a').click(function (e) {
         e.preventDefault();
-        $("#content-web").load("Inventario", function () { });
+        $("#content-web").load("Inventario/listar", function () { });
     });
 });
 
-function agregar_producto() {
-    $.ajax({
-        method: "POST",
-        url: "Producto/agregar_nuevo"
-    })
-        .done(function (obj) {
-
-            $(".modal-content").html(obj);
-
-            $("#btn-guardar-producto").click(function () {
-
-                guardar_producto();
-            });
-
-            $('#productosModal').modal('show');
-
+function show_frm_agregar() {
+    $(".modal-content").load("Producto/agregar", function () {
+        $("#btn-guardar-producto").click(function (e) {
+            e.preventDefault();
+            guardar_producto();
         });
+    });
 }
 
 function modificar_producto(codigo_producto) {
-
-    var producto = {};
-    producto.codigo = codigo_producto;
-
-    $.ajax({
-        method: "POST",
-        url: "/Producto/modificar",
-        data: producto
-    })
-        .done(function (obj) {
-
-            $(".modal-content").html(obj);
-
-            $('#productosModal').modal('show');
-
-            $("#btn_guardar_cambios").click(function () {
-
-                guardar_cambios_producto();
-
-            });
+    $(".modal-content").load("Producto/modificar", {"codigo_producto" : codigo_producto}, function () {
+        $("#btn_guardar_cambios").click(function (e) {
+            e.preventDefault();
+            modificar_producto();
         });
+    });
 }
 
 function agregar_producto() {
@@ -70,7 +45,7 @@ function agregar_producto() {
 
     $.ajax({
         method: "POST",
-        url: "Producto/agregar",
+        url: "Producto/agregar_producto",
         data: producto
     })
     .done(function (obj) {
@@ -88,7 +63,7 @@ function recargar_productos() {
     $("#content-web").load("Producto/listar");
 }
 
-function guardar_cambios_producto() {
+function modificar_producto() {
     var producto = {};
     producto.codigo = $("#codigo-producto").val();
     producto.nombre = $("#nombre-producto").val();
@@ -99,12 +74,11 @@ function guardar_cambios_producto() {
 
     $.ajax({
         method: "POST",
-        url: "Producto/guardar_cambios",
+        url: "Producto/modificar_producto",
         data: producto
     })
     .done(function (obj) {
         if (obj.estado) {
-
             $('#productosModal').modal('hide');
             Aviso.show(obj.mensaje, "success");
             buscar_productos();
@@ -116,19 +90,20 @@ function guardar_cambios_producto() {
 }
 
 function buscar_productos() {
-    var filtros = {};
-    filtros.nombre_producto = $("#nombre_producto").val();
-
-    $.ajax({
-        method: "POST",
-        url: "Producto/buscar_productos",
-        data: filtros
-    })
-    .done(function (obj) {
-
-        $("#listado_productos").html(obj);
-
-    });
+    var input_filtro = $("#input-filtro").val();
+    
+    if(input_filtro == ""){
+        recargar_productos();
+    }else{
+        $.ajax({
+            method: "POST",
+            url: "Producto/buscar_productos",
+            data: {filtro: input_filtro}
+        })
+        .done(function (obj) {
+            $("#content-web").html(obj);
+        });
+    }
 }
 
 function mostrar_historial(producto, departamento) {

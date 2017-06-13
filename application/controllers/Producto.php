@@ -26,11 +26,24 @@ class Producto extends CI_Controller {
 		$this->load->view('producto/agregar');
 	}
 
-    public function agregar_producto(){
-        $datos = $this->input->post();
-        $codigo = $datos['codigo'];
+    ##Despliega vista agregar
+	public function modificar()
+	{
+		$this->load->view('producto/modificar');
+	}
 
-        $producto_db = $this->producto_model->get_productos($codigo);
+    public function buscar_productos()
+    {
+        $filtro = $this->input->post('filtro');
+        $productos = $this->producto_model->get_productos($filtro);
+        $this->load->view('producto/listar', array('Productos' => $productos));
+    }
+
+    public function agregar_producto()
+    {
+        $codigo = $this->input->post('codigo');
+
+        $producto_db = $this->producto_model->get_producto($codigo);
         if(!$producto_db){
             $this->output->set_content_type('application/json')
             ->set_output(json_encode(array('estado' => true, 'mensaje' => 'Call save model')));

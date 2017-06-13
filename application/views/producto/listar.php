@@ -3,10 +3,10 @@
     <div class="col-md-10">
         <form class="form-inline">
             <div class="form-group">
-                <input type="text" class="form-control" id="" placeholder="Producto">
+                <input type="text" class="form-control" id="input-filtro" placeholder="Producto">
             </div>
-            <button type="button" class="btn btn-info">Buscar</button>
-            <button type="button" id="btn-agregar" href="<?php echo base_url() ?>Producto/agregar" class="btn btn-success" data-toggle="modal" data-target="#productosModal">Agregar Nuevo</button>
+            <button type="button" onclick="buscar_productos(true);" class="btn btn-info">Buscar</button>
+            <button type="button" id="btn-agregar" onclick="show_frm_agregar();" class="btn btn-success" data-toggle="modal" data-target="#productosModal">Agregar Nuevo</button>
         </form>
     </div>
     <br><br>
@@ -18,7 +18,7 @@
                 <div class="panel-body">
                     <p>Código: <?php echo $item['codigo'];?></p>
                     <p>
-                        <a href="#" class="btn btn-warning" role="button">Modificar</a> 
+                        <a href="#" class="btn btn-warning" role="button" data-toggle="modal" data-target="#productosModal" onclick="modificar_producto('<?php echo $item['codigo'];?>');">Modificar</a> 
                         <a href="#" class="btn btn-danger" role="button">Eliminar</a>
                     </p>
                 </div>
