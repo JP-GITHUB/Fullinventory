@@ -54,13 +54,13 @@
             </div>
         </div>
         </nav>
-		<div id="container-web" class="container-fluid">
+		<div id="content-web" class="container-fluid">
 
         </div>
 
         <script>var base_url = '<?php echo base_url() ?>';</script>
         <script src="<?=base_url();?>assets/js/jquery-3.2.1.min.js"></script>
         <script src="<?=base_url();?>assets/js/bootstrap.min.js"></script>
-        <script src="<?=base_url();?>assets/js/sitio/login.js"></script>
+        <script src="<?=base_url();?>assets/js/sitio/app.js"></script>
     </body>
 </html>
