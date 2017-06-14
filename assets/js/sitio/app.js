@@ -15,7 +15,7 @@ $(document).ready(function () {
 
    $('#aside-locales a').click(function (e) {
         e.preventDefault();
-        $("#content-web").load("", function () { });
+        $("#content-web").load("Local/listar", function () { });
     });
 
     $('#aside-proveedores a').click(function (e) {
@@ -24,7 +24,8 @@ $(document).ready(function () {
     });
 });
 
-function show_frm_agregar() {
+/** Productos */
+function frm_agregar_producto() {
     $(".modal-content").load("Producto/agregar", function () {
         $("#btn-guardar-producto").click(function (e) {
             e.preventDefault();
@@ -33,7 +34,7 @@ function show_frm_agregar() {
     });
 }
 
-function modificar_producto(codigo_producto) {
+function frm_modificar_producto(codigo_producto) {
     $(".modal-content").load("Producto/modificar", {"codigo_producto" : codigo_producto}, function () {
         $("#btn_guardar_cambios").click(function (e) {
             e.preventDefault();
@@ -113,6 +114,96 @@ function buscar_productos() {
         });
     }
 }
+/** Fin Productos */
+
+/** Locales */
+function frm_agregar_local() {
+    $("#localModal .modal-content").load("Local/agregar", function () {
+        $("#btn-guardar-local").click(function (e) {
+            e.preventDefault();
+            agregar_local();
+        });
+    });
+}
+
+function frm_modificar_local(codigo_local) {
+    $("#localModal .modal-content").load("Local/modificar", {"codigo_local" : codigo_local});
+}
+
+function frm_departamentos_local(codigo_local) {
+    $("#localModal .modal-content").load("Departamento/listar", {"local" : codigo_local}, function () {});
+}
+
+function agregar_local() {
+    var local = {};
+    local.codigo = $("#codigo-local").val();
+    local.nombre = $("#nombre-local").val();
+    local.direccion = $("#direccion-local").val();
+    local.comuna = $("#comuna-local").val();
+
+    $.ajax({
+        method: "POST",
+        url: "Local/agregar_local",
+        data: local
+    })
+    .done(function (obj) {
+        if (obj.estado) {
+            $('#localModal').modal('hide');
+            $("#content-web").load("Local/listar");
+            Aviso.show("Local Ingresado Correctamente", "success");
+        } else {
+            Aviso.show(obj.mensaje, "danger");
+        }
+    });
+}
+/** Fin locales */
+
+/** Departamento */
+function frm_agregar_departamento() {
+    var local = $("#depto-codlocal").val();
+    $("#localModal .modal-content").load("Departamento/agregar", function () {
+        $("#btn-volver-departamentos").click(function (e) {
+            $("#localModal .modal-content").load("Departamento/listar", {"local" : local});
+        });
+        /*$("#btn-guardar-local").click(function (e) {
+            e.preventDefault();
+            agregar_departamento();
+        });*/
+    });
+}
+
+function frm_modificar_departamento(codigo_departamento) {
+    var local = $("#depto-codlocal").val();
+    $("#localModal .modal-content").load("Departamento/modificar", {"codigo_departamento" : codigo_departamento}, function(){
+        $("#btn-volver-departamentos").click(function (e) {
+            $("#localModal .modal-content").load("Departamento/listar", {"local" : local});
+        });
+    });
+}
+
+function agregar_departamento() {
+    var local = {};
+    local.codigo = $("#codigo-local").val();
+    local.nombre = $("#nombre-local").val();
+    local.direccion = $("#direccion-local").val();
+    local.comuna = $("#comuna-local").val();
+
+    $.ajax({
+        method: "POST",
+        url: "Departamento/agregar_departamento",
+        data: local
+    })
+    .done(function (obj) {
+        if (obj.estado) {
+            $('#localModal').modal('hide');
+            $("#content-web").load("Departamento/listar");
+            Aviso.show("Local Ingresado Correctamente", "success");
+        } else {
+            Aviso.show(obj.mensaje, "danger");
+        }
+    });
+}
+/** Fin Departamento */
 
 function mostrar_historial(producto, departamento) {
     $(".section-historial").load("/inventario/historial/" + departamento + "/" + producto, function () {

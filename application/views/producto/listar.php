@@ -6,7 +6,7 @@
                 <input type="text" class="form-control" id="input-filtro" placeholder="Producto">
             </div>
             <button type="button" onclick="buscar_productos(true);" class="btn btn-info">Buscar</button>
-            <button type="button" id="btn-agregar" onclick="show_frm_agregar();" class="btn btn-success" data-toggle="modal" data-target="#productosModal">Agregar Nuevo</button>
+            <button type="button" id="btn-agregar" onclick="frm_agregar_producto();" class="btn btn-success" data-toggle="modal" data-target="#productosModal">Agregar Nuevo</button>
         </form>
     </div>
     <br><br>
@@ -18,7 +18,7 @@
                 <div class="panel-body">
                     <p>Código: <?php echo $item['codigo'];?></p>
                     <p>
-                        <a href="#" class="btn btn-warning" role="button" data-toggle="modal" data-target="#productosModal" onclick="modificar_producto('<?php echo $item['codigo'];?>');">Modificar</a> 
+                        <a href="#" class="btn btn-warning" role="button" data-toggle="modal" data-target="#productosModal" onclick="frm_modificar_producto('<?php echo $item['codigo'];?>');">Modificar</a> 
                         <a href="#" class="btn btn-danger" role="button">Eliminar</a>
                     </p>
                 </div>
