@@ -15,6 +15,7 @@
         <link href="<?=base_url();?>assets/css/bootstrap.min.css" rel="stylesheet">
         <link rel="stylesheet" href="<?=base_url();?>assets/css/sitio/aside.css">
         <link rel="stylesheet" href="<?=base_url();?>assets/css/sitio/site.css">
+        <link rel="stylesheet" href="<?=base_url();?>assets/css/bootbox.css">
     </head>
     <body>
         <nav class="navbar navbar-default navHeader">
@@ -63,10 +64,20 @@
 		<div id="content-web" class="container-fluid">
 
         </div>
+        <div class="bb-alert alert alert-success" style="display:none;">
+                    <span></span>
+        </div>
+        <!-- Modal -->
+        <div class="modal fade" id="contenModal" tabindex="-1" role="dialog" aria-labelledby="contenModal">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content"></div>
+            </div>
+        </div>
 
         <script>var base_url = '<?php echo base_url() ?>';</script>
         <script src="<?=base_url();?>assets/js/jquery-3.2.1.min.js"></script>
         <script src="<?=base_url();?>assets/js/bootstrap.min.js"></script>
         <script src="<?=base_url();?>assets/js/sitio/app.js"></script>
+        <script src="<?=base_url();?>assets/js/bootbox.js"></script>
     </body>
 </html>
