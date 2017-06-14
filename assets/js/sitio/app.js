@@ -1,6 +1,37 @@
 'use strict';
 var Aviso;
 
+Aviso = (function () {
+    "use strict";
+    var elem = $(".bb-alert");
+    var hideHandler, that = {};
+    that.show = function (text, tipo) {
+        clearTimeout(hideHandler);
+        elem.removeClass("alert-warning alert-success alert-danger alert-alert alert-info");
+        switch (tipo) {
+            case 'success':
+                elem.addClass("alert-success");
+                break;
+            case 'warning':
+                elem.addClass("alert-warning");
+                break;
+            case 'danger':
+                elem.addClass("alert-danger");
+                break;
+            case 'alert':
+                elem.addClass("alert-alert");
+                break;
+            case 'info':
+            default:
+                elem.addClass("alert-info");
+                break;
+        }
+        elem.find("span").html(text);
+        elem.delay(200).fadeIn().delay(2000).fadeOut();
+    };
+    return that;
+}());
+
 $(document).ready(function () {
     inicializar_box();
     $('#aside-productos a').click(function (e) {
@@ -13,23 +44,200 @@ $(document).ready(function () {
         $("#content-web").load("Inventario/listar", function () { });
     });
 
-   $('#aside-locales a').click(function (e) {
+    $('#aside-locales a').click(function (e) {
         e.preventDefault();
         $("#content-web").load("Local/listar", function () { });
     });
 
     $('#aside-proveedores a').click(function (e) {
         e.preventDefault();
-        $("#content-web").load("", function () { });
+        $("#content-web").load("Proveedor/listar", function () { });
     });
 });
+
+
+//Proveedores
+
+function show_frm_agregar_proveedor() {
+
+    $(".modal-content").load("Proveedor/agregar", function () {
+
+        $("#codigo_proveedor").blur(function () {
+            if (existe_proveedor(this.value)) {
+
+                this.value = '';
+                Aviso.show('El código ingresado ya existe', "danger");
+            }
+        });
+
+        $("#btn_guardar_proveedor").click(function (e) {
+            e.preventDefault();
+            agregar_proveedor();
+        });
+    });
+}
+
+function existe_proveedor(codigo) {
+
+    var proveedor = {};
+    var existe = false;
+
+    proveedor.codigo = codigo;
+
+    $.ajax({
+        method: "POST",
+        url: "Proveedor/existe_proveedor",
+        data: proveedor,
+        async: false
+    })
+        .done(function (obj) {
+
+            existe = obj.existe;
+        });
+    return existe;
+}
+
+function agregar_proveedor() {
+    var proveedor = {};
+    proveedor.codigo = $("#codigo_proveedor").val();
+    proveedor.nombre = $("#nombre_proveedor").val();
+    proveedor.telefono = $("#telefono_proveedor").val();
+    proveedor.direccion = $("#direccion_proveedor").val();
+    proveedor.comuna = $("#comuna_proveedor").val();
+
+    $.ajax({
+        method: "POST",
+        url: "Proveedor/agregar_proveedor",
+        data: proveedor
+    })
+        .done(function (obj) {
+            $('#contenModal').modal('hide');
+            if (obj.estado) {
+                buscar_proveedor();
+                Aviso.show(obj.mensaje, "success");
+            } else {
+                Aviso.show(obj.mensaje, "danger");
+            }
+        });
+}
+
+function buscar_proveedor() {
+
+    var input_filtro = $("#input-filtro").val();
+
+    if (input_filtro == "") {
+        recargar_proveedores();
+    } else {
+        $.ajax({
+            method: "POST",
+            url: "Proveedor/buscar_proveedor",
+            data: { filtro: input_filtro }
+        })
+            .done(function (obj) {
+                $("#content-web").html(obj);
+            });
+    }
+
+}
+
+function recargar_proveedores() {
+
+    $("#content-web").load("Proveedor/listar");
+}
+
+function modificar_proveedor($codigo) {
+
+    var proveedor = {};
+    proveedor.codigo = $codigo;
+
+    $.ajax({
+        method: "POST",
+        url: "Proveedor/modificar_producto",
+        data: proveedor
+    })
+        .done(function (obj) {
+
+            $(".modal-content").html(obj);
+
+            $('#btn_guardar_cambios_proveedor').off("click");
+
+            $("#btn_guardar_cambios_proveedor").click(function () {
+
+                guardar_cambios_proveedor();
+
+            });
+
+        });
+}
+
+function cambiar_estado_proveedor(codigo, estado) {
+
+    bootbox.addLocale("es", {
+        OK: 'SI',
+        CANCEL: 'NO',
+        CONFIRM: 'SI'
+    });
+    bootbox.setLocale("es");
+    bootbox.confirm({
+        message: '¿Esta seguro que desea ' + ((estado == '1') ? 'Desactivar' : 'Activar') + ' el proveedor seleccionado?',
+        title: 'Confirmar',
+        callback: function (result) {
+            if (result) {
+                var proveedor = {};
+                proveedor.codigo = codigo;
+                proveedor.id_estado = estado;
+
+                $.ajax({
+                    method: "POST",
+                    url: "Proveedor/cambiar_estado_proveedor",
+                    data: proveedor
+                })
+                    .done(function (obj) {
+                        if (obj.estado) {
+                            buscar_proveedor();
+                            Aviso.show(obj.mensaje, "success");
+                        } else {
+                            Aviso.show(obj.mensaje, "danger");
+                        }
+                    });
+            } else {
+                Aviso.show("No se realizaron cambios", "danger");
+            }
+        }
+    });
+}
+
+
+function guardar_cambios_proveedor() {
+    var proveedor = {};
+    proveedor.codigo = $("#codigo_proveedor").val();
+    proveedor.nombre = $("#nombre_proveedor").val();
+    proveedor.telefono = $("#telefono_proveedor").val();
+    proveedor.direccion = $("#direccion_proveedor").val();
+    proveedor.comuna = $("#comuna_proveedor").val();
+
+    $.ajax({
+        method: "POST",
+        url: "Proveedor/guardar_cambios_proveedor",
+        data: proveedor
+    })
+        .done(function (obj) {
+            $('#contenModal').modal('hide');
+            if (obj.estado) {
+                buscar_proveedor();
+                Aviso.show(obj.mensaje, "success");
+            } else {
+                Aviso.show(obj.mensaje, "danger");
+            }
+        });
+}
 
 /** Productos */
 function frm_agregar_producto() {
     $(".modal-content").load("Producto/agregar", function () {
         $("#btn-guardar-producto").click(function (e) {
             e.preventDefault();
-            guardar_producto();
+            agregar_producto();
         });
     });
 }
@@ -57,15 +265,15 @@ function agregar_producto() {
         url: "Producto/agregar_producto",
         data: producto
     })
-    .done(function (obj) {
-        if (obj.estado) {
-            $('#productosModal').modal('hide');
-            buscar_productos();
-            Aviso.show("Producto Ingresado Correctamente", "success");
-        } else {
-            Aviso.show(obj.mensaje, "danger");
-        }
-    });
+        .done(function (obj) {
+            if (obj.estado) {
+                $('#productosModal').modal('hide');
+                buscar_productos();
+                Aviso.show("Producto Ingresado Correctamente", "success");
+            } else {
+                Aviso.show(obj.mensaje, "danger");
+            }
+        });
 }
 
 function recargar_productos() {
@@ -86,32 +294,32 @@ function modificar_producto() {
         url: "Producto/modificar_producto",
         data: producto
     })
-    .done(function (obj) {
-        if (obj.estado) {
-            $('#productosModal').modal('hide');
-            Aviso.show(obj.mensaje, "success");
-            buscar_productos();
+        .done(function (obj) {
+            if (obj.estado) {
+                $('#productosModal').modal('hide');
+                Aviso.show(obj.mensaje, "success");
+                buscar_productos();
 
-        } else {
-            Aviso.show(obj.mensaje, "danger");
-        }
-    });
+            } else {
+                Aviso.show(obj.mensaje, "danger");
+            }
+        });
 }
 
 function buscar_productos() {
     var input_filtro = $("#input-filtro").val();
-    
-    if(input_filtro == ""){
+
+    if (input_filtro == "") {
         recargar_productos();
-    }else{
+    } else {
         $.ajax({
             method: "POST",
             url: "Producto/buscar_productos",
-            data: {filtro: input_filtro}
+            data: { filtro: input_filtro }
         })
-        .done(function (obj) {
-            $("#content-web").html(obj);
-        });
+            .done(function (obj) {
+                $("#content-web").html(obj);
+            });
     }
 }
 /** Fin Productos */
@@ -298,7 +506,7 @@ function mostrar_grafico() {
 }
 
 
-function inicializar_box(){
+function inicializar_box() {
     Aviso = (function () {
         var elem,
             hideHandler,
