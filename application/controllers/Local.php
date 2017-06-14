@@ -5,9 +5,12 @@ class Local extends CI_Controller {
 	function __construct() 
     {
         parent::__construct();
-        #Validar si es admin
         if (!$this->session->has_userdata('info_usuario')) {
             redirect("login");
+        }else{
+            if($this->session->info_usuario['rol_id'] != 1){
+                redirect("login");
+            }
         }
 
         $this->load->model(array('local_model', 'comuna_model'));

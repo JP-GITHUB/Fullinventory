@@ -47,7 +47,8 @@ class Inventario_model extends CI_Model {
             		JOIN
             	operacion AS O ON(I.operacion_id = O.id)
             WHERE P.codigo = ?
-            AND P.departamento_codigo = ? ;";
+            AND P.departamento_codigo = ? 
+            ORDER BY fecha_movimiento;";
         
         return $this->db->query($sql, array($codigo, $departamento))->result_array();
     }

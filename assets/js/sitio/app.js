@@ -414,8 +414,10 @@ function agregar_departamento() {
 /** Fin Departamento */
 
 function mostrar_historial(producto, departamento) {
-    $(".section-historial").load("/inventario/historial/" + departamento + "/" + producto, function () {
+    var filtro = {'departamento': departamento, 'producto': producto};
+    $(".section-historial").load("Inventario/historial", filtro, function () {
         $('#example').DataTable({
+            "ordering": false,
             "columns": [
                 { "data": "tipo" },
                 { "data": "fecha_movimiento" },

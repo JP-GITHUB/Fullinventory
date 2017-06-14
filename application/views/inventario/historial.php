@@ -14,13 +14,13 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <% for(var i=0; i<historial.length; i++) { %>
+                        <?php foreach ($Historial as $item):?>
                         <tr>
-                            <td><%= historial[i].descripcion %></td>
-                            <td><%= historial[i].fecha_movimiento %></td>
-                            <td><%= historial[i].cantidad %></td>
+                            <td><?php echo $item['descripcion'];?></td>
+                            <td><?php echo $item['fecha_movimiento'];?></td>
+                            <td><?php echo $item['cantidad'];?></td>
                         </tr>
-                        <% } %>                          
+                        <?php endforeach;?>                         
                     </tbody>
                 </table>
             </div>
