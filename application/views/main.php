@@ -50,9 +50,9 @@
             <ul class="nav navbar-nav">
                 <li id="aside-inicio"><a href="/">Inicio<span class="pull-right hidden-xs showopacity glyphicon glyphicon-home"></span></a></li>  
                 <li id="aside-productos"><a href="#">Productos<span class="pull-right hidden-xs showopacity glyphicon glyphicon-th-list"></span></a></li>
-                <li id="aside-inventario"><a href="#">Proveedores<span class="pull-right hidden-xs showopacity glyphicon glyphicon-apple"></span></a></li>
+                <li id="aside-proveedores"><a href="#">Proveedores<span class="pull-right hidden-xs showopacity glyphicon glyphicon-apple"></span></a></li>
                 <?php if($this->session->info_usuario['rol_id'] == 1):?>
-                    <li id="aside-inventario"><a href="#">Locales<span class="pull-right hidden-xs showopacity glyphicon glyphicon-send"></span></a></li>
+                    <li id="aside-locales"><a href="#">Locales<span class="pull-right hidden-xs showopacity glyphicon glyphicon-send"></span></a></li>
                 <?php endif;?>
                 <li id="aside-inventario"><a href="#">Inventario<span class="pull-right hidden-xs showopacity glyphicon glyphicon-tags"></span></a></li>
                 <!--<li id="aside-configuracion"><a href="#">Configuración<span class="pull-right hidden-xs showopacity glyphicon glyphicon-wrench"></span></a></li>-->

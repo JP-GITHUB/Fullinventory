@@ -5,14 +5,22 @@ $(document).ready(function () {
     inicializar_box();
     $('#aside-productos a').click(function (e) {
         e.preventDefault();
-        $("#content-web").load("Producto/listar", function () {
-            //buscar_productos();
-        });
+        $("#content-web").load("Producto/listar", function () { });
     });
 
     $('#aside-inventario a').click(function (e) {
         e.preventDefault();
         $("#content-web").load("Inventario/listar", function () { });
+    });
+
+   $('#aside-locales a').click(function (e) {
+        e.preventDefault();
+        $("#content-web").load("", function () { });
+    });
+
+    $('#aside-proveedores a').click(function (e) {
+        e.preventDefault();
+        $("#content-web").load("", function () { });
     });
 });
 
