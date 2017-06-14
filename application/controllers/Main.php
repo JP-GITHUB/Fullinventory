@@ -5,7 +5,7 @@ class Main extends CI_Controller {
 	function __construct() {
         parent::__construct();
 
-        if (!$this->session->has_userdata('email')) {
+        if (!$this->session->has_userdata('info_usuario')) {
             redirect("login");
         }
     }

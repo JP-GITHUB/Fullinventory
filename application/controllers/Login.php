@@ -26,11 +26,15 @@ class Login extends CI_Controller {
         $existencia = $this->usuario_model->verificar_existencia($email);
         if($existencia){
             if($existencia['clave'] == $clave){
-                $this->session->set_userdata('nombre', $existencia['nombre']);
-                $this->session->set_userdata('apellido', $existencia['apellido_paterno']);
-                $this->session->set_userdata('estado', $existencia['estado_id']);
-                $this->session->set_userdata('local_codigo', $existencia['local_codigo']);
-                $this->session->set_userdata('email', $email);
+                $this->session->set_userdata('info_usuario', array(
+                    'nombre' => $existencia['nombre'],
+                    'apellido' => $existencia['apellido_paterno'],
+                    'estado' => $existencia['estado_id'],
+                    'local_codigo' => $existencia['local_codigo'],
+                    'email' => $existencia['email'],
+                    'rol_id' => $existencia['rol_id'],
+                ));
+
                 $this->output->set_content_type('application/json')->set_output(json_encode(array('estado' => true)));
             }else{
                 $this->output->set_content_type('application/json')->set_output(json_encode(array('estado' => false, 'mensaje' => 'El usuario no es valido.')));
@@ -42,7 +46,7 @@ class Login extends CI_Controller {
     }
 
     public function logout() {
-        $this->session->unset_userdata('email');
+        $this->session->unset_userdata('info_usuario');
         $this->removeCache();
         redirect("login");
     }
