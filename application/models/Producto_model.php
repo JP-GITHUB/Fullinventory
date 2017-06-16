@@ -43,4 +43,18 @@ class Producto_model extends CI_Model {
     public function save($data){
         $this->db->insert('producto', $data);
     }
+
+    public function count_productos($local = null){
+	    $sql = "
+            SELECT 
+                COUNT(P.codigo) AS total_productos
+            FROM
+                producto AS P
+            JOIN
+                departamento as D
+                ON (P.departamento_codigo = D.codigo)
+            WHERE D.local_codigo = ?";
+        
+        return $this->db->query($sql, array($local))->row();
+    }
 }

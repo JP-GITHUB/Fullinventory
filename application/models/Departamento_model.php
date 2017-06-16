@@ -64,4 +64,10 @@ class Departamento_model extends CI_Model {
             return true; 
         }
     }
+
+   public function count_departamentos($local = null){
+	    $sql = "SELECT count(1) AS total_departamento
+                FROM departamento where local_codigo = ?";        
+        return $this->db->query($sql, array($local))->row();
+    }
 }

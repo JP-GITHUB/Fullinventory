@@ -14,4 +14,11 @@ class Usuario_model extends CI_Model {
         $this->db->where('email', $email);
         return $this->db->get()->row_array();
     }
+
+   public function count_usuarios($local = null){
+	    $sql = "SELECT count(1) AS total_usuarios 
+                FROM usuario where local_codigo = ?;";
+        
+        return $this->db->query($sql, array($local))->row();
+    }
 }

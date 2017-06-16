@@ -63,7 +63,71 @@
         </div>
         </nav>
 		<div id="content-web" class="container-fluid">
+            <br />
+            <div class="container">
+                <div class="jumbotron">
+                    <h1 class="text-warning">Fullinventory</h1>
+                </div>
+                
+                <h3>Información Local<h3>
 
+                <section class="content">
+                    <div class="row">
+                        <div class="col-lg-3 col-xs-6 bg-aqua">
+                            <!-- small box -->
+                            <div class="small-box">
+                                <div class="inner">
+                                    <h3><?php echo $total_productos;?></h3>
+                                    <p>Productos</p>
+                                </div>
+                                <div class="icon">
+                                    <i class="glyphicon glyphicon-th-list"></i>
+                                </div>                                    
+                            </div>
+                        </div>
+                        <!-- ./col -->
+                        <div class="col-lg-3 col-xs-6 bg-red">
+                            <!-- small box -->
+                            <div class="small-box">
+                                <div class="inner">
+                                    <h3><?php echo $total_proveedores;?></h3>
+                                    <p>Proveedores</p>
+                                </div>
+                                <div class="icon">
+                                    <i class="glyphicon glyphicon-home"></i>
+                                </div>                                    
+                            </div>
+                        </div>
+                        <!-- ./col -->
+                        <div class="col-lg-3 col-xs-6 bg-gray">
+                            <!-- small box -->
+                            <div class="small-box">
+                                <div class="inner">
+                                    <h3><?php echo $total_departamento;?></h3>
+                                    <p>Departamentos</p>
+                                </div>
+                                <div class="icon">
+                                    <i class="glyphicon glyphicon-apple"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- ./col -->
+                        <div class="col-lg-3 col-xs-6 bg-green">
+                            <!-- small box -->
+                            <div class="small-box">
+                                <div class="inner">
+                                    <h3><?php echo $total_usuarios;?></h3>
+                                    <p>Usuarios</p>
+                                </div>
+                                <div class="icon">
+                                    <i class="glyphicon glyphicon-tags"></i>
+                                </div>                                    
+                            </div>
+                        </div>
+                        <!-- ./col -->
+                    </div>
+                </section>
+            </div>
         </div>
         <div class="bb-alert alert alert-success" style="display:none;">
                     <span></span>

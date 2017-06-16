@@ -56,3 +56,32 @@ body,html{
 .head-panel-productos{
     max-height: 35px; overflow-y: hidden;
 }
+
+.bg-aqua{
+    background-color: #00c0ef !important;
+}
+
+.bg-red{
+    background-color: #dd4b39 !important;
+}
+
+.bg-gray{
+    color: #000;
+    background-color: #d2d6de !important;
+}
+
+.bg-green{
+    background-color: #00a65a !important;
+}
+
+.small-box .icon {
+    -webkit-transition: all .3s linear;
+    -o-transition: all .3s linear;
+    transition: all .3s linear;
+    position: absolute;
+    top: 5px;
+    right: 10px;
+    z-index: 0;
+    font-size: 50px;
+    color: rgba(0,0,0,0.15);
+}

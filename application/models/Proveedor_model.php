@@ -102,4 +102,21 @@ class Proveedor_model extends CI_Model {
     public function save($data){
         $this->db->insert('producto', $data);
     }
+
+   public function count_proveedores($local = null){
+	    $sql = "
+            SELECT 
+                count(1) as total_proveedores
+            FROM
+                (SELECT 
+                    P.proveedor_codigo
+                FROM
+                    producto AS P
+                JOIN departamento AS D ON (P.departamento_codigo = D.codigo)
+                WHERE
+                    D.local_codigo = ?
+                GROUP BY P.proveedor_codigo) AS tmp_count";
+        
+        return $this->db->query($sql, array($local))->row();
+    }
 }
