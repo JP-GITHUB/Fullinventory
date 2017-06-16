@@ -36,7 +36,10 @@ $(document).ready(function () {
     inicializar_box();
     $('#aside-productos a').click(function (e) {
         e.preventDefault();
-        $("#content-web").load("Producto/listar", function () { });
+        $("#content-web").load("Producto/inicio", function () {
+            listar_productos();
+        });
+
     });
 
     $('#aside-inventario a').click(function (e) {
@@ -232,6 +235,12 @@ function guardar_cambios_proveedor() {
 }
 
 /** Productos */
+
+function listar_productos() {
+    $("#listado_productos").load("Producto/listar", function () {
+    });
+}
+
 function frm_agregar_producto() {
     $(".modal-content").load("Producto/agregar", function () {
         $("#btn-guardar-producto").click(function (e) {
@@ -485,13 +494,13 @@ function frm_modificar_departamento(codigo_departamento) {
         $("#btn_guardar_cambios_departamento").click(function (e) {
 
             guardar_cambios_departamento(local);
-                        
+
         });
     });
 }
 
 function guardar_cambios_departamento(local) {
-    
+
     var departamento = {};
     departamento.local = local;
     departamento.codigo = $("#codigo_departamento").val();
@@ -504,7 +513,7 @@ function guardar_cambios_departamento(local) {
     })
         .done(function (obj) {
             $("#contentModal .modal-content").load("Departamento/listar", { "local": local });
-            if (obj.estado) {                
+            if (obj.estado) {
                 Aviso.show(obj.mensaje, "success");
             } else {
                 Aviso.show(obj.mensaje, "danger");
@@ -574,7 +583,7 @@ function cambiar_estado_departamento(codigo, estado, local) {
 /** Fin Departamento */
 
 function mostrar_historial(producto, departamento) {
-    var filtro = {'departamento': departamento, 'producto': producto};
+    var filtro = { 'departamento': departamento, 'producto': producto };
 
     $(".section-historial").load("Inventario/historial", filtro, function () {
         $('#example').DataTable({
@@ -603,13 +612,13 @@ function mostrar_historial(producto, departamento) {
 
 function mostrar_grafico(filtro) {
 
-   $.ajax({
+    $.ajax({
         method: "POST",
         url: "Inventario/obtener_movimientos",
         data: filtro
     })
-    .done(function( obj ) {
-        Highcharts.chart('container', {
+        .done(function (obj) {
+            Highcharts.chart('container', {
                 chart: {
                     type: 'column'
                 },
@@ -668,7 +677,7 @@ function mostrar_grafico(filtro) {
 
                 }]
             });
-    });
+        });
 
 }
 

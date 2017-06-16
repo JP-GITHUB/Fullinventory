@@ -19,15 +19,19 @@
 		</div>
 		<div class="form-group">
 			<label for="">Cantidad</label>
-			<input type="text" class="form-control" id="cantidad-producto" placeholder="Cantidad">
+			<input type="number" class="form-control" id="cantidad-producto" placeholder="Cantidad">
 		</div>
 		<div class="form-group">
 			<label for="">Cod. Proveedor</label>
-			<input type="text" class="form-control" id="codproveedor-producto" placeholder="Cod. Proveedor">
+			<select class="form-control" id="codproveedor-producto">
+			<% for(var i=0; i<proveedores.length; i++) { %>
+				<option value="<%= proveedores[i].codigo %>"><%= proveedores[i].nombre %></option>
+			<% } %>
+			</select>
 		</div>
 		<div class="form-groupr">
 			<button type="button" id="btn-guardar-producto" class="btn btn-warning">Guardar</button>
-			<button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>		
+			<button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
 		</div>
 	</form>
 </div>

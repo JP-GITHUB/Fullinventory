@@ -14,11 +14,18 @@ class Producto extends CI_Controller {
     }
 
     ##Despliega vista listar
-	public function listar()
+	public function inicio()
+	{        
+        $this->load->view('producto/inicio');
+	}
+
+    public function listar()
 	{
         $local = $this->session->info_usuario['local_codigo'];
+        
         $productos = $this->producto_model->get_productos($local);
-		$this->load->view('producto/listar', array('Productos' => $productos));
+		
+        $this->load->view('producto/listar', array('productos' => $productos));
 	}
 
     ##Despliega vista agregar

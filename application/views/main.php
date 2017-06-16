@@ -10,7 +10,7 @@
         <!-- Viewport mobile tag for sensible mobile support -->
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
-        <link rel="icon" href="/images/icon_inventario.gif">
+        <link rel="icon" href="<?php echo base_url('assets/images/icon_inventario.gif');?>">
         <link rel="stylesheet" href="<?=base_url();?>assets/css/reset.css">
         <link href="<?=base_url();?>assets/css/bootstrap.min.css" rel="stylesheet">
         <link rel="stylesheet" href="<?=base_url();?>assets/css/sitio/aside.css">
