@@ -33,7 +33,7 @@ class Proveedor extends CI_Controller {
 		$this->load->view('proveedor/agregar', array('comunas' => $comunas));
 	}
 
-    public function modificar_producto(){
+    public function modificar_proveedor(){
 
         $codigo = $this->input->post('codigo');
 
@@ -80,7 +80,7 @@ class Proveedor extends CI_Controller {
         }
     }
 
-     public function guardar_cambios_proveedor()
+    public function guardar_cambios_proveedor()
     {
         $codigo = $this->input->post('codigo');
         $nombre = $this->input->post('nombre');
@@ -99,7 +99,7 @@ class Proveedor extends CI_Controller {
         }
     }
 
-     public function cambiar_estado_proveedor()
+    public function cambiar_estado_proveedor()
     {
         $codigo = $this->input->post('codigo');
         $id_estado = $this->input->post('id_estado');

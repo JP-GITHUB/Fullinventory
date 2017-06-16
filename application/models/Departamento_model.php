@@ -15,16 +15,53 @@ class Departamento_model extends CI_Model {
         return $this->db->get()->result_array();
     }
 
-    public function save($codigo, $nombre, $direccion, $comuna, $empresa){
-        $this->db->insert('local', array(
+    public function save_departamento($local,$codigo, $nombre){
+
+        $this->db->insert('departamento', array(
             'codigo' => $codigo, 
             'nombre' => $nombre, 
-            'direccion' => $direccion, 
-            'comuna_id' => $comuna,
-            'estado_id' => 1,
-            'empresa_id' => 5
+            'local_codigo' => $local
         ));
 
         return ($this->db->affected_rows() > 0) ? true : false;
+    }
+
+   public function change_state($codigo, $id_estado)
+    {
+        $data = array(            
+            'id_estado' => ($id_estado == '1' ? '2' : '1')
+        );
+
+        $this->db->where('codigo', $codigo);
+
+        $this->db->update('departamento', $data);
+
+        if($this->db->affected_rows() > 0)
+        {         
+            return true; 
+        }
+    }
+
+    public function get_departamento($codigo = null){
+        
+        $this->db->where('codigo', $codigo);
+        
+        return $this->db->get('departamento')->row_array();
+    }
+
+    public function save_change_departamento($codigo, $nombre)
+    {
+        $data = array(            
+            'nombre' => $nombre                        
+        );
+
+        $this->db->where('codigo', $codigo);
+
+        $this->db->update('departamento', $data);
+
+        if($this->db->affected_rows() > 0)
+        {         
+            return true; 
+        }
     }
 }

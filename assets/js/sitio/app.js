@@ -111,7 +111,7 @@ function agregar_proveedor() {
         data: proveedor
     })
         .done(function (obj) {
-            $('#contenModal').modal('hide');
+            $('#contentModal').modal('hide');
             if (obj.estado) {
                 buscar_proveedor();
                 Aviso.show(obj.mensaje, "success");
@@ -152,7 +152,7 @@ function modificar_proveedor($codigo) {
 
     $.ajax({
         method: "POST",
-        url: "Proveedor/modificar_producto",
+        url: "Proveedor/modificar_proveedor",
         data: proveedor
     })
         .done(function (obj) {
@@ -207,7 +207,6 @@ function cambiar_estado_proveedor(codigo, estado) {
     });
 }
 
-
 function guardar_cambios_proveedor() {
     var proveedor = {};
     proveedor.codigo = $("#codigo_proveedor").val();
@@ -222,7 +221,7 @@ function guardar_cambios_proveedor() {
         data: proveedor
     })
         .done(function (obj) {
-            $('#contenModal').modal('hide');
+            $('#contentModal').modal('hide');
             if (obj.estado) {
                 buscar_proveedor();
                 Aviso.show(obj.mensaje, "success");
@@ -243,7 +242,7 @@ function frm_agregar_producto() {
 }
 
 function frm_modificar_producto(codigo_producto) {
-    $(".modal-content").load("Producto/modificar", {"codigo_producto" : codigo_producto}, function () {
+    $(".modal-content").load("Producto/modificar", { "codigo_producto": codigo_producto }, function () {
         $("#btn_guardar_cambios").click(function (e) {
             e.preventDefault();
             modificar_producto();
@@ -326,7 +325,7 @@ function buscar_productos() {
 
 /** Locales */
 function frm_agregar_local() {
-    $("#localModal .modal-content").load("Local/agregar", function () {
+    $("#contentModal .modal-content").load("Local/agregar", function () {
         $("#btn-guardar-local").click(function (e) {
             e.preventDefault();
             agregar_local();
@@ -334,12 +333,66 @@ function frm_agregar_local() {
     });
 }
 
+function buscar_local() {
+
+    var input_filtro = $("#input-filtro").val();
+
+    if (input_filtro == "") {
+        recargar_local();
+    } else {
+        $.ajax({
+            method: "POST",
+            url: "Local/buscar_local",
+            data: { filtro: input_filtro }
+        })
+            .done(function (obj) {
+                $("#content-web").html(obj);
+            });
+    }
+}
+
+function recargar_local() {
+    $("#content-web").load("Local/listar");
+}
+
 function frm_modificar_local(codigo_local) {
-    $("#localModal .modal-content").load("Local/modificar", {"codigo_local" : codigo_local});
+    $("#contentModal .modal-content").load("Local/modificar", { "codigo_local": codigo_local }, function () {
+
+        $('#btn_guardar_local').off("click");
+
+        $('#btn_guardar_local').click(function () {
+            guardar_cambios_local();
+        });
+
+    });
+}
+
+function guardar_cambios_local() {
+
+    var local = {};
+    local.codigo = $("#codigo-local").val();
+    local.nombre = $("#nombre-local").val();
+    local.direccion = $("#direccion-local").val();
+    local.comuna = $("#comuna-local").val();
+
+    $.ajax({
+        method: "POST",
+        url: "Local/guardar_cambios_local",
+        data: local
+    })
+        .done(function (obj) {
+            $('#contentModal').modal('hide');
+            if (obj.estado) {
+                buscar_local();
+                Aviso.show(obj.mensaje, "success");
+            } else {
+                Aviso.show(obj.mensaje, "danger");
+            }
+        });
 }
 
 function frm_departamentos_local(codigo_local) {
-    $("#localModal .modal-content").load("Departamento/listar", {"local" : codigo_local}, function () {});
+    $("#contentModal .modal-content").load("Departamento/listar", { "local": codigo_local }, function () { });
 }
 
 function agregar_local() {
@@ -354,67 +407,174 @@ function agregar_local() {
         url: "Local/agregar_local",
         data: local
     })
-    .done(function (obj) {
-        if (obj.estado) {
-            $('#localModal').modal('hide');
-            $("#content-web").load("Local/listar");
-            Aviso.show("Local Ingresado Correctamente", "success");
-        } else {
-            Aviso.show(obj.mensaje, "danger");
+        .done(function (obj) {
+            if (obj.estado) {
+                $('#contentModal').modal('hide');
+                $("#content-web").load("Local/listar");
+                Aviso.show("Local Ingresado Correctamente", "success");
+            } else {
+                Aviso.show(obj.mensaje, "danger");
+            }
+        });
+}
+
+function cambiar_estado_local(codigo, estado) {
+
+    bootbox.addLocale("es", {
+        OK: 'SI',
+        CANCEL: 'NO',
+        CONFIRM: 'SI'
+    });
+    bootbox.setLocale("es");
+    bootbox.confirm({
+        message: '¿Esta seguro que desea ' + ((estado == '1') ? 'Desactivar' : 'Activar') + ' el local seleccionado?',
+        title: 'Confirmar',
+        callback: function (result) {
+            if (result) {
+                var local = {};
+                local.codigo = codigo;
+                local.id_estado = estado;
+
+                $.ajax({
+                    method: "POST",
+                    url: "Local/cambiar_estado_local",
+                    data: local
+                })
+                    .done(function (obj) {
+                        if (obj.estado) {
+                            buscar_local();
+                            Aviso.show(obj.mensaje, "success");
+                        } else {
+                            Aviso.show(obj.mensaje, "danger");
+                        }
+                    });
+            } else {
+                Aviso.show("No se realizaron cambios", "danger");
+            }
         }
     });
 }
+
 /** Fin locales */
 
 /** Departamento */
 function frm_agregar_departamento() {
+
     var local = $("#depto-codlocal").val();
-    $("#localModal .modal-content").load("Departamento/agregar", function () {
+
+    $("#contentModal .modal-content").load("Departamento/agregar", function () {
         $("#btn-volver-departamentos").click(function (e) {
-            $("#localModal .modal-content").load("Departamento/listar", {"local" : local});
+            $("#contentModal .modal-content").load("Departamento/listar", { "local": local });
         });
-        /*$("#btn-guardar-local").click(function (e) {
+        $("#btn_guardar_departamento").click(function (e) {
             e.preventDefault();
-            agregar_departamento();
-        });*/
+            agregar_departamento(local);
+        });
     });
 }
 
 function frm_modificar_departamento(codigo_departamento) {
+
     var local = $("#depto-codlocal").val();
-    $("#localModal .modal-content").load("Departamento/modificar", {"codigo_departamento" : codigo_departamento}, function(){
+
+    $("#contentModal .modal-content").load("Departamento/modificar", { "codigo_departamento": codigo_departamento }, function () {
         $("#btn-volver-departamentos").click(function (e) {
-            $("#localModal .modal-content").load("Departamento/listar", {"local" : local});
+            $("#contentModal .modal-content").load("Departamento/listar", { "local": local });
+        });
+
+        $("#btn_guardar_cambios_departamento").click(function (e) {
+
+            guardar_cambios_departamento(local);
+                        
         });
     });
 }
 
-function agregar_departamento() {
-    var local = {};
-    local.codigo = $("#codigo-local").val();
-    local.nombre = $("#nombre-local").val();
-    local.direccion = $("#direccion-local").val();
-    local.comuna = $("#comuna-local").val();
+function guardar_cambios_departamento(local) {
+    
+    var departamento = {};
+    departamento.local = local;
+    departamento.codigo = $("#codigo_departamento").val();
+    departamento.nombre = $("#nombre_departamento").val();
+
+    $.ajax({
+        method: "POST",
+        url: "Departamento/guardar_cambios_departamento",
+        data: departamento
+    })
+        .done(function (obj) {
+            $("#contentModal .modal-content").load("Departamento/listar", { "local": local });
+            if (obj.estado) {                
+                Aviso.show(obj.mensaje, "success");
+            } else {
+                Aviso.show(obj.mensaje, "danger");
+            }
+        });
+}
+
+function agregar_departamento(local) {
+
+    var departamento = {};
+    departamento.local = local;
+    departamento.codigo = $("#codigo_departamento").val();
+    departamento.nombre = $("#nombre_departamento").val();
 
     $.ajax({
         method: "POST",
         url: "Departamento/agregar_departamento",
-        data: local
+        data: departamento
     })
-    .done(function (obj) {
-        if (obj.estado) {
-            $('#localModal').modal('hide');
-            $("#content-web").load("Departamento/listar");
-            Aviso.show("Local Ingresado Correctamente", "success");
-        } else {
-            Aviso.show(obj.mensaje, "danger");
+        .done(function (obj) {
+            $("#contentModal .modal-content").load("Departamento/listar", { "local": local });
+            if (obj.estado) {
+                Aviso.show(obj.mensaje, "success");
+            } else {
+                Aviso.show(obj.mensaje, "danger");
+            }
+        });
+}
+
+function cambiar_estado_departamento(codigo, estado, local) {
+
+    bootbox.addLocale("es", {
+        OK: 'SI',
+        CANCEL: 'NO',
+        CONFIRM: 'SI'
+    });
+    bootbox.setLocale("es");
+    bootbox.confirm({
+        message: '¿Esta seguro que desea ' + ((estado == '1') ? 'Desactivar' : 'Activar') + ' el departamento seleccionado?',
+        title: 'Confirmar',
+        callback: function (result) {
+            if (result) {
+                var departamento = {};
+                departamento.codigo = codigo;
+                departamento.id_estado = estado;
+
+                $.ajax({
+                    method: "POST",
+                    url: "Departamento/cambiar_estado_departamento",
+                    data: departamento
+                })
+                    .done(function (obj) {
+                        $("#contentModal .modal-content").load("Departamento/listar", { "local": local });
+                        if (obj.estado) {
+                            Aviso.show(obj.mensaje, "success");
+                        } else {
+                            Aviso.show(obj.mensaje, "danger");
+                        }
+                    });
+            } else {
+                Aviso.show("No se realizaron cambios", "danger");
+            }
         }
     });
+
 }
 /** Fin Departamento */
 
 function mostrar_historial(producto, departamento) {
-    var filtro = {'departamento': departamento, 'producto': producto};
+    var filtro = { 'departamento': departamento, 'producto': producto };
     $(".section-historial").load("Inventario/historial", filtro, function () {
         $('#example').DataTable({
             "ordering": false,

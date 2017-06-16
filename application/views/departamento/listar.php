@@ -17,7 +17,7 @@
     
     <div class="row" style="padding:5px">
         <?php if(count($Departamentos) === 0):?>
-            <p class="text-center">Sin locales para mostrar...</p>
+            <p class="text-center">Sin departamentos asignados...</p>
         <?php endif;?>
 
         <?php foreach ($Departamentos as $item):?>
@@ -29,7 +29,7 @@
                         <p>Nombre: <?php echo $item['nombre'];?></p>
                         <p>
                             <a href="#" class="btn btn-warning" role="button" onclick="frm_modificar_departamento('<?php echo $item['codigo'];?>');">Modificar</a> 
-                            <a href="#" class="btn btn-danger" role="button">Deshabilitar</a>
+                            <a href="#" class="btn <?php echo (($item['id_estado'] == '1') ? 'btn-danger' : 'btn-success'); ?>" role="button" onclick="cambiar_estado_departamento('<?php echo $item['codigo'];?>','<?php echo $item['id_estado'];?>','<?php echo $local;?>');"><?php echo (($item['id_estado'] == '1') ? 'Desactivar' : 'Activar'); ?></a>
                         </p>
                     </div>
                 </div>

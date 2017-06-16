@@ -69,7 +69,7 @@
                     <span></span>
         </div>
         <!-- Modal -->
-        <div class="modal fade" id="contenModal" tabindex="-1" role="dialog" aria-labelledby="contenModal">
+        <div class="modal fade" id="contentModal" tabindex="-1" role="dialog" aria-labelledby="contenModal">
             <div class="modal-dialog" role="document">
                 <div class="modal-content"></div>
             </div>
