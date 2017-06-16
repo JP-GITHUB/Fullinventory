@@ -591,6 +591,12 @@ function mostrar_historial(producto, departamento) {
 
         mostrar_grafico(filtro);
 
+        $.get("Inventario/obtener_cantidades/"+producto+"/"+departamento, function(obj_producto){
+            if(obj_producto.cantidad_actual < obj_producto.minima_producto){
+                bootbox.alert("<br/><p style='padding: 15px;' class='bg-warning text-center'>La cantidad actual del productos es menor a la cantidad minima establecida</p>");
+            }
+        })
+
         $(".section-inventario").addClass("hidden");
         $(".section-historial").removeClass("hidden");
 

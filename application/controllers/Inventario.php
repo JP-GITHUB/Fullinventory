@@ -18,6 +18,7 @@ class Inventario extends CI_Controller {
 	{
         $local = $this->session->info_usuario['local_codigo'];
         $inventarios = $this->inventario_model->listar_inventario($local);
+
 		$this->load->view('inventario/listar', array('Registros' => $inventarios));
 	}
 
@@ -27,8 +28,31 @@ class Inventario extends CI_Controller {
         $local = $this->session->info_usuario['local_codigo'];
 
         $historial = $this->inventario_model->historial_producto($producto, $departamento, $local);
-        $cantidad_actual = $this->inventario_model->calculo_cantidad_actual($producto, $local);
-        $this->load->view('inventario/historial', array('Historial' => $historial, 'cantidad_actual' => $cantidad_actual));
+        
+        $cantidades = $this->obtener_cantidades($producto, $departamento, $json = false);
+        $this->load->view(
+            'inventario/historial', 
+            array(
+                'Historial' => $historial, 
+                'cantidad_actual' => $cantidades['cantidad_actual'],
+                'cantidad_minima' => $cantidades['minima_producto']
+            ));
+    }
+
+    public function obtener_cantidades($producto, $departamento, $json = true){
+        $local = $this->session->info_usuario['local_codigo'];
+
+        $aReturn = array(
+            'cantidad_actual' => $this->inventario_model->calculo_cantidad_actual($producto, $local),
+            'minima_producto' => (int) $this->inventario_model->get_cantidad_minima($producto, $departamento)
+        );
+
+        if ($json === true) {
+            $this->output->set_content_type('application/json')
+            ->set_output(json_encode($aReturn));
+        }
+
+        return $aReturn;
     }
 
     public function obtener_movimientos(){
