@@ -10,7 +10,7 @@
                     <div class="panel-body">
                     <div class="col-sm-1 col-md-1"></div>
                     <div class="col-sm-10 col-md-10">
-                        <img src="<?php echo base_url('assets/images/' .$producto['imagen'] )?>" style="width:100%px;height:150px;">
+                        <img src="<?php echo base_url('assets/images/' .$producto['imagen']); ?>" style="width:100%px;height:150px;">
                     </div>
                      <p>Código:
                        <?php echo $producto['codigo'];?>

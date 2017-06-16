@@ -57,4 +57,19 @@ class Producto_model extends CI_Model {
         
         return $this->db->query($sql, array($local))->row();
     }
+    public function save_producto($codigo, $nombre, $descripcion, $cantidad, $codproveedor, $departamento, $imagen){
+
+        $this->db->insert('producto', array(
+            'codigo' => $codigo, 
+            'nombre' => $nombre, 
+            'descripcion' => $descripcion, 
+            'imagen' => $imagen,
+            'cantidad_minima' => $cantidad,
+            'departamento_codigo' => $departamento,
+            'proveedor_codigo' => $codproveedor,
+            'estado_id' => 1
+        ));
+
+        return ($this->db->affected_rows() > 0) ? true : false;
+    }
 }

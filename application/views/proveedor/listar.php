@@ -6,7 +6,7 @@
                 <input type="text" class="form-control" id="input-filtro" placeholder="Proveedor">
             </div>
             <button type="button" onclick="buscar_proveedor();" class="btn btn-info">Buscar</button>
-            <button type="button" id="btn_agregar_proveedor" onclick="show_frm_agregar_proveedor();" class="btn btn-success" data-toggle="modal" data-target="#contenModal">Agregar Nuevo</button>
+            <button type="button" id="btn_agregar_proveedor" onclick="show_frm_agregar_proveedor();" class="btn btn-success" data-toggle="modal" data-target="#contentModal">Agregar Nuevo</button>
         </form>
     </div>
     <br><br>
@@ -21,7 +21,7 @@
                         <p>Código: <?php echo $proveedor['codigo'];?></p>
                         <p>Teléfono: <?php echo $proveedor['numero_telefonico'];?></p>
                         <p>
-                            <a href="#" class="btn btn-warning" role="button" data-toggle="modal" data-target="#contenModal" onclick="modificar_proveedor('<?php echo $proveedor['codigo'];?>');">Modificar</a> 
+                            <a href="#" class="btn btn-warning" role="button" data-toggle="modal" data-target="#contentModal" onclick="modificar_proveedor('<?php echo $proveedor['codigo'];?>');">Modificar</a> 
                             <a href="#" class="btn <?php echo (($proveedor['id_estado'] == '1') ? 'btn-danger' : 'btn-success'); ?>" role="button" onclick="cambiar_estado_proveedor('<?php echo $proveedor['codigo'];?>','<?php echo $proveedor['id_estado'];?>');"><?php echo (($proveedor['id_estado'] == '1') ? 'Desactivar' : 'Activar'); ?></a>
                         </p>
                     </div>
