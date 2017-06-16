@@ -63,7 +63,7 @@ $(document).ready(function () {
 
 function show_frm_agregar_proveedor() {
 
-    $(".modal-content").load("Proveedor/agregar", function () {
+    $("#contentModal .modal-content").load("Proveedor/agregar", function () {
 
         $("#codigo_proveedor").blur(function () {
             if (existe_proveedor(this.value)) {
@@ -260,13 +260,19 @@ function frm_modificar_producto(codigo_producto) {
 }
 
 function agregar_producto() {
+    
+    var archivo = $('#archivo_imagen');
+    
+    var file_data = archivo.prop('files')[0];
+
     var producto = {};
-    producto.codigo = $("#codigo-producto").val();
-    producto.nombre = $("#nombre-producto").val();
-    producto.descripcion = $("#descripcion-producto").val();
-    producto.imagen = $("#imagen-producto").val();
-    producto.cantidad = $("#cantidad-producto").val();
-    producto.codproveedor = $("#codproveedor-producto").val();
+    producto.codigo = $("#codigo_producto").val();
+    producto.nombre = $("#nombre_productos").val();
+    producto.descripcion = $("#descripcion_producto").val();
+    producto.cantidad = $("#cantidad_producto").val();
+    producto.codproveedor = $("#codproveedor_producto").val();
+    producto.departamento = $("#departamento_producto").val();
+    producto.imagen = file_data.name;
 
     $.ajax({
         method: "POST",
@@ -275,13 +281,45 @@ function agregar_producto() {
     })
         .done(function (obj) {
             if (obj.estado) {
-                $('#productosModal').modal('hide');
-                buscar_productos();
+                saveImagen();
+                $('#contentModal').modal('hide');
+                listar_productos();
                 Aviso.show("Producto Ingresado Correctamente", "success");
             } else {
                 Aviso.show(obj.mensaje, "danger");
             }
         });
+}
+
+function saveImagen() {
+
+    var archivo = $('#archivo_imagen');
+    
+    var file_data = archivo.prop('files')[0];
+    var form_data = new FormData();
+    form_data.append('file', file_data);    
+    var ord = Math.random() * 10000000000000000;
+    var url = base_url + 'Producto/save_archivo/' + ord;
+
+    $.ajax({
+        url: url,
+        contentType: false,
+        processData: false,
+        data: form_data,
+        type: 'post',
+        async: false,
+        success: function (data) {
+
+            if (typeof data.error !== 'undefined' && data.error !== null) {
+                Aviso.show(data.error, "danger");
+            } else {
+                Aviso.show("Archivo subido correctamente", "success");
+            }
+        },
+        error: function (data) {
+            Aviso.show("Error inesperado, no se pudo completar la acción", "danger");
+        }
+    });
 }
 
 function recargar_productos() {
@@ -598,19 +636,19 @@ function mostrar_historial(producto, departamento) {
             "searching": false
         });
 
-        $("#btn-genetar-inventario").click(function(){
-            bootbox.confirm("<p class='text-info'>Sera realizado el inventario con los movimientos posteriores al ultimo inventario</p>", 
-            function(result){
-                if(result){
-                    realizar_inventario(filtro);
-                } 
-            });
+        $("#btn-genetar-inventario").click(function () {
+            bootbox.confirm("<p class='text-info'>Sera realizado el inventario con los movimientos posteriores al ultimo inventario</p>",
+                function (result) {
+                    if (result) {
+                        realizar_inventario(filtro);
+                    }
+                });
         });
 
         mostrar_grafico(filtro);
 
-        $.get("Inventario/obtener_cantidades/"+producto+"/"+departamento, function(obj_producto){
-            if(obj_producto.cantidad_actual < obj_producto.minima_producto){
+        $.get("Inventario/obtener_cantidades/" + producto + "/" + departamento, function (obj_producto) {
+            if (obj_producto.cantidad_actual < obj_producto.minima_producto) {
                 bootbox.alert("<br/><p style='padding: 15px;' class='bg-warning text-center'>La cantidad actual del productos es menor a la cantidad minima establecida</p>");
             }
         })
@@ -625,24 +663,24 @@ function mostrar_historial(producto, departamento) {
     });
 }
 
-function realizar_inventario(filtro){
-   $.ajax({
+function realizar_inventario(filtro) {
+    $.ajax({
         method: "POST",
         url: "Inventario/realizar_inventario",
         data: filtro
     })
-    .done(function(obj) {
-        if(obj){
-            Aviso.show("Inventario ingresado correctamente", "success");
-            mostrar_historial(filtro.producto, filtro.departamento);
-        }else{
-            Aviso.show("No se pudo ingresar el inventario", "danger");
-        }
-    });
+        .done(function (obj) {
+            if (obj) {
+                Aviso.show("Inventario ingresado correctamente", "success");
+                mostrar_historial(filtro.producto, filtro.departamento);
+            } else {
+                Aviso.show("No se pudo ingresar el inventario", "danger");
+            }
+        });
 }
 
 function mostrar_grafico(filtro) {
-   $.ajax({
+    $.ajax({
         method: "POST",
         url: "Inventario/obtener_movimientos",
         data: filtro
