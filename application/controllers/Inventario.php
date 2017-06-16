@@ -83,4 +83,15 @@ class Inventario extends CI_Controller {
         $this->output->set_content_type('application/json')
         ->set_output(json_encode(array('estado' => true, 'datos' => $aReturn)));
     }
+
+    function realizar_inventario(){
+        $departamento = $this->input->post('departamento');
+        $producto = $this->input->post('producto');
+        $local = $this->session->info_usuario['local_codigo'];
+        
+        $this->output->set_content_type('application/json')
+        ->set_output(json_encode(
+            array('estado' => $this->inventario_model->ingresar_inventario($producto, $local, $departamento))
+        ));
+    }
 }

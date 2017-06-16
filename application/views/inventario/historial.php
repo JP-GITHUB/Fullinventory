@@ -4,8 +4,13 @@
 
     <div class="panel panel-default" style="padding-left: 5px">
         <div class="panel-body">
-            <p>Cantidad actual del producto : <?php echo $cantidad_actual;?></p>
-            <p>Cantidad minima del producto : <?php echo $cantidad_minima;?></p>
+            <div class="col-xs-12 col-sm-9 col-md-9">
+                <p>Cantidad actual del producto : <?php echo $cantidad_actual;?></p>
+                <p>Cantidad minima del producto : <?php echo $cantidad_minima;?></p>
+            </div>
+            <div class="col-xs-12 col-sm-3 col-md-3">
+                <button type="button" id="btn-genetar-inventario" class="btn btn-info pull-right">Generar Inventario</button>
+            </div>
         </div>
     </div>
 
