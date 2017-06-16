@@ -29,8 +29,7 @@ class Inventario_model extends CI_Model {
                     ON (i.departamento_codigo = d.codigo)
             WHERE
                 i.operacion_id = 4
-                AND d.local_codigo = ?
-            GROUP BY i.fecha_movimiento;";
+                AND d.local_codigo = ?";
         
         return $this->db->query($sql, array($local))->result_array();
     }
