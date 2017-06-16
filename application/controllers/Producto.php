@@ -16,7 +16,8 @@ class Producto extends CI_Controller {
     ##Despliega vista listar
 	public function listar()
 	{
-        $productos = $this->producto_model->get_lista();
+        $local = $this->session->info_usuario['local_codigo'];
+        $productos = $this->producto_model->get_productos($local);
 		$this->load->view('producto/listar', array('Productos' => $productos));
 	}
 
@@ -34,8 +35,9 @@ class Producto extends CI_Controller {
 
     public function buscar_productos()
     {
+        $local = $this->session->info_usuario['local_codigo'];
         $filtro = $this->input->post('filtro');
-        $productos = $this->producto_model->get_productos($filtro);
+        $productos = $this->producto_model->get_productos($local, $filtro);
         $this->load->view('producto/listar', array('Productos' => $productos));
     }
 

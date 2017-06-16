@@ -8,12 +8,6 @@ class Producto_model extends CI_Model {
         // Your own constructor code
     }
 
-    public function get_lista(){
-        $this->db->select('*');
-        $this->db->from('producto');
-        return $this->db->get()->result_array();
-    }
-    
     public function get_producto($codigo = null){
         $this->db->select('codigo, departamento_codigo, proveedor_codigo, estado_id');
         $this->db->from('producto');
@@ -21,20 +15,29 @@ class Producto_model extends CI_Model {
         return $this->db->get()->row_array();
     }
 
-    public function get_productos($filtro = ""){
+    public function get_productos($local = null, $filtro = ""){
 	    $sql = "
-            SELECT  codigo, 
-                    nombre, 
-                    substring(concat(descripcion,SPACE(100)),1,100) as descripcion, 
-                    imagen, 
-                    cantidad_minima, 
-                    departamento_codigo, 
-                    proveedor_codigo, 
-                    estado_id
-			FROM producto 
-            WHERE nombre like '%".$this->db->escape_like_str($filtro)."%'";
+            SELECT 
+                P.codigo,
+                P.nombre,
+                SUBSTRING(CONCAT(P.descripcion, SPACE(100)),
+                    1,
+                    100) AS descripcion,
+                P.imagen,
+                P.cantidad_minima,
+                P.departamento_codigo,
+                P.proveedor_codigo,
+                P.estado_id,
+                D.local_codigo
+            FROM
+                producto AS P
+            JOIN
+                departamento as D
+                ON (P.departamento_codigo = D.codigo)
+            WHERE P.nombre like '%".$this->db->escape_like_str($filtro)."%'
+                AND D.local_codigo = ?";
         
-        return $this->db->query($sql)->result_array();
+        return $this->db->query($sql, array($local))->result_array();
     }
 
     public function save($data){

@@ -14,7 +14,7 @@
     <?php foreach ($Productos as $item):?>
         <div class="col-sm-4 col-md-3">
             <div class="panel panel-default">
-                <div class="panel-heading"><?php echo $item['nombre'];?> <small><?php echo $item['descripcion'];?></small></div>
+                <div class="panel-heading head-panel-productos"><?php echo $item['nombre'];?> <small><?php echo $item['descripcion'];?></small></div>
                 <div class="panel-body">
                     <p>Código: <?php echo $item['codigo'];?></p>
                     <p>

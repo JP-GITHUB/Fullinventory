@@ -50,7 +50,7 @@
             </div>
             <div class="collapse navbar-collapse" id="bs-sidebar-navbar-collapse-1">
             <ul class="nav navbar-nav">
-                <li id="aside-inicio"><a href="/">Inicio<span class="pull-right hidden-xs showopacity glyphicon glyphicon-home"></span></a></li>  
+                <li id="aside-inicio"><a href="<?php echo base_url() ?>">Inicio<span class="pull-right hidden-xs showopacity glyphicon glyphicon-home"></span></a></li>  
                 <li id="aside-productos"><a href="#">Productos<span class="pull-right hidden-xs showopacity glyphicon glyphicon-th-list"></span></a></li>
                 <li id="aside-proveedores"><a href="#">Proveedores<span class="pull-right hidden-xs showopacity glyphicon glyphicon-apple"></span></a></li>
                 <?php if($this->session->info_usuario['rol_id'] == 1):?>
