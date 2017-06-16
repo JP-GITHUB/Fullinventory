@@ -27,8 +27,8 @@ class Inventario extends CI_Controller {
         $local = $this->session->info_usuario['local_codigo'];
 
         $historial = $this->inventario_model->historial_producto($producto, $departamento, $local);
-
-        $this->load->view('inventario/historial', array('Historial' => $historial));
+        $cantidad_actual = $this->inventario_model->calculo_cantidad_actual($producto, $local);
+        $this->load->view('inventario/historial', array('Historial' => $historial, 'cantidad_actual' => $cantidad_actual));
     }
 
     public function obtener_movimientos(){

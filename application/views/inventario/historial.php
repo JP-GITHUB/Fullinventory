@@ -1,6 +1,7 @@
 <br/>
 <div class="col-xs-12 col-sm-9 col-md-9">
     <h1 class="text-center">Historial</h1>
+    <h3>Cantidad actual del producto : <?php echo $cantidad_actual;?></h3>
 
     <div class="col-xs-12 col-sm-7 col-md-7">
         <div class="panel panel-default center_div">

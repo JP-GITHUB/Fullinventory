@@ -87,4 +87,52 @@ class Inventario_model extends CI_Model {
 
         return $this->db->query($sql, array($producto, $departamento, $operacion, $local))->result_array();
     }
+
+    public function calculo_cantidad_actual($producto, $local){
+        $sql = "
+            SELECT 
+                *
+            FROM
+                inventario
+            WHERE
+                producto_codigo = ?
+                    AND id >= (SELECT 
+                        MAX(id) AS id
+                    FROM
+                        inventario
+                    WHERE
+                        producto_codigo = ?
+                            AND operacion_id = 4)
+                    AND departamento_codigo IN (SELECT 
+                        codigo
+                    FROM
+                        departamento
+                    WHERE
+                        local_codigo = ? AND id_estado = 1)
+            ORDER BY fecha_movimiento ASC;";
+
+        $historico = $this->db->query($sql, array($producto, $producto, $local))->result_array();
+        $cantidad_inventario = 0;
+
+        foreach ($historico as $key => $value) {
+            switch ($value['operacion_id']) {
+                case '1':
+                    $cantidad_inventario += $value['cantidad'];
+                    break;
+                case '2':
+                    $cantidad_inventario -= $value['cantidad'];
+                    break;
+                case '3':
+                    $cantidad_inventario -= $value['cantidad'];
+                    break;
+                case '4':
+                    $cantidad_inventario = $value['cantidad'];
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        return $cantidad_inventario;
+    }
 }
