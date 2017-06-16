@@ -90,7 +90,7 @@ class Inventario_model extends CI_Model {
     public function calculo_cantidad_actual($producto, $local){
         $sql = "
             SELECT 
-                *
+                operacion_id, cantidad, fecha_movimiento
             FROM
                 inventario
             WHERE
@@ -133,5 +133,35 @@ class Inventario_model extends CI_Model {
         }
 
         return $cantidad_inventario;
+    }
+
+    function get_cantidad_minima($producto, $departamento){
+        $sql = "SELECT cantidad_minima FROM producto WHERE codigo = ? AND departamento_codigo = ?";
+        $row = $this->db->query($sql, array($producto, $departamento))->row();
+        return $row->cantidad_minima;
+    }
+
+    function ingresar_inventario($producto, $local, $departamento){
+        $cantidad = $this->calculo_cantidad_actual($producto, $local);
+
+        if($cantidad == 0){
+            return false;
+        }
+
+        $data = array(
+            'producto_codigo' => $producto,
+            'departamento_codigo' => $departamento,
+            'operacion_id' => 4,
+            'cantidad' => $cantidad,
+            'fecha_movimiento' => date('Y-m-d H:i:s')
+        );
+
+        $this->db->insert('inventario', $data);
+
+        if($this->db->affected_rows() > 0){         
+            return true; 
+        }else{
+            return false;
+        }
     }
 }

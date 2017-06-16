@@ -1,7 +1,18 @@
 <br/>
 <div class="col-xs-12 col-sm-9 col-md-9">
     <h1 class="text-center">Historial</h1>
-    <h3>Cantidad actual del producto : <?php echo $cantidad_actual;?></h3>
+
+    <div class="panel panel-default" style="padding-left: 5px">
+        <div class="panel-body">
+            <div class="col-xs-12 col-sm-9 col-md-9">
+                <p>Cantidad actual del producto : <?php echo $cantidad_actual;?></p>
+                <p>Cantidad minima del producto : <?php echo $cantidad_minima;?></p>
+            </div>
+            <div class="col-xs-12 col-sm-3 col-md-3">
+                <button type="button" id="btn-genetar-inventario" class="btn btn-info pull-right">Generar Inventario</button>
+            </div>
+        </div>
+    </div>
 
     <div class="col-xs-12 col-sm-7 col-md-7">
         <div class="panel panel-default center_div">
@@ -37,6 +48,7 @@
 </div>
 
 <div class="col-xs-12 col-sm-9 col-md-9">
-    <br/>  
-    <a href="#" id="btn-volver-inventario" class="btn btn-default">Volver</a> 
+    <br />  
+    <a href="#" id="btn-volver-inventario" class="btn btn-default">Volver</a>
+    <br />
 </div>

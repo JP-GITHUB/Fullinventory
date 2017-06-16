@@ -598,7 +598,22 @@ function mostrar_historial(producto, departamento) {
             "searching": false
         });
 
+        $("#btn-genetar-inventario").click(function(){
+            bootbox.confirm("<p class='text-info'>Sera realizado el inventario con los movimientos posteriores al ultimo inventario</p>", 
+            function(result){
+                if(result){
+                    realizar_inventario(filtro);
+                } 
+            });
+        });
+
         mostrar_grafico(filtro);
+
+        $.get("Inventario/obtener_cantidades/"+producto+"/"+departamento, function(obj_producto){
+            if(obj_producto.cantidad_actual < obj_producto.minima_producto){
+                bootbox.alert("<br/><p style='padding: 15px;' class='bg-warning text-center'>La cantidad actual del productos es menor a la cantidad minima establecida</p>");
+            }
+        })
 
         $(".section-inventario").addClass("hidden");
         $(".section-historial").removeClass("hidden");
@@ -610,9 +625,24 @@ function mostrar_historial(producto, departamento) {
     });
 }
 
-function mostrar_grafico(filtro) {
+function realizar_inventario(filtro){
+   $.ajax({
+        method: "POST",
+        url: "Inventario/realizar_inventario",
+        data: filtro
+    })
+    .done(function(obj) {
+        if(obj){
+            Aviso.show("Inventario ingresado correctamente", "success");
+            mostrar_historial(filtro.producto, filtro.departamento);
+        }else{
+            Aviso.show("No se pudo ingresar el inventario", "danger");
+        }
+    });
+}
 
-    $.ajax({
+function mostrar_grafico(filtro) {
+   $.ajax({
         method: "POST",
         url: "Inventario/obtener_movimientos",
         data: filtro
@@ -652,7 +682,7 @@ function mostrar_grafico(filtro) {
                 tooltip: {
                     headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
                     pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
-                    '<td style="padding:0"><b>{point.y:.1f} mm</b></td></tr>',
+                    '<td style="padding:0"><b>{point.y:.1f}</b></td></tr>',
                     footerFormat: '</table>',
                     shared: true,
                     useHTML: true

@@ -18,7 +18,7 @@
                     <div class="panel-body">
                         <p>Código: <?php echo $item['codigo'];?></p>
                         <p>Ultimo Inventario: <?php echo $item['fecha_movimiento'];?></p>
-                        <p>Cantidad Total: <?php echo $item['cantidad'];?></p>
+                        <p>Cantidad en Inventario: <?php echo $item['cantidad'];?></p>
                         <p>
                             <a href="#" class="btn btn-warning pull-right" onclick="mostrar_historial('<?php echo $item['codigo'];?>', '<?php echo $item['departamento_codigo'];?>');">Ver historial</a> 
                         </p>
